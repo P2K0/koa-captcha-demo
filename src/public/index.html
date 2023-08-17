@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>验证码测试</title>
+  <style>
+      body {
+          background-color: #f0f0f0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+      }
+
+      .captcha-container {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          background-color: #fff;
+          padding: 10px;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+          margin: 20px 0;
+      }
+
+      img {
+          cursor: pointer;
+          margin-bottom: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          height: 200px;
+      }
+
+      input[type="text"] {
+          padding: 15px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          margin-bottom: 10px;
+      }
+
+      button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 20px;
+          cursor: pointer;
+      }
+
+      button:hover {
+          background-color: #0056b3;
+      }
+
+      .f-red{
+          color:red
+      }
+  </style>
+</head>
+<body>
+<div class="captcha-container">
+  <h1> 状态 :<span class="f-red"></span></h1>
+  <img alt="Captcha Image" src="/captcha">
+  <input placeholder="输入验证码" type="text">
+  <button>验证</button>
+</div>
+
+<script>
+  const imageEl = document.querySelector('img');
+  const inputEl = document.querySelector('input');
+  const buttonEl = document.querySelector('button');
+  const messageEl = document.querySelector('span');
+
+  function resetCaptcha() {
+    imageEl.src = `captcha?${+new Date()}}`;
+    inputEl.value = '';
+    messageEl.textContent = '';
+  }
+
+  imageEl.addEventListener('click', resetCaptcha);
+
+  buttonEl.addEventListener('click', async () => {
+    const code = inputEl.value;
+
+    if (!code) return;
+
+    const res = await fetch('/captcha', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({code})
+    });
+
+    const data = await res.json();
+
+    if (data.code !== 200)  resetCaptcha()
+
+    messageEl.textContent = data.msg;
+  });
+</script>
+</body>
+</html>

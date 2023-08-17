@@ -1,0 +1,31 @@
+{
+  "name": "koa-captcha-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node-dev ./src/main.ts"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.38.6",
+    "@types/koa": "^2.13.8",
+    "@types/koa-bodyparser": "^4.3.10",
+    "@types/koa-router": "^7.4.4",
+    "@types/koa-session": "^6.4.1",
+    "@types/koa-static": "^4.0.2",
+    "@types/koa__cors": "^4.0.0",
+    "@types/node": "*",
+    "eslint": "^8.46.0",
+    "eslint-plugin-import": "^2.28.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@koa/cors": "^4.0.0",
+    "canvas": "^2.11.2",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^12.0.0",
+    "koa-session": "^6.4.0",
+    "koa-static": "^5.0.0"
+  }
+}
