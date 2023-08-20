@@ -5,7 +5,7 @@ interface Config {
 }
 
 const config: Config = {
-  PORT: 3000,
+  PORT: 80,
   CAPTCHA_KEY: "random-captcha",
   APP_KEYS: "koa-captcha-demo"
 };

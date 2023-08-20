@@ -2,7 +2,8 @@
   "name": "koa-captcha-demo",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev ./src/main.ts"
+    "dev": "ts-node-dev ./src/main.ts",
+    "build": "webpack -c ./build/webpack.config.js"
   },
   "license": "ISC",
   "devDependencies": {
@@ -14,10 +15,15 @@
     "@types/koa-static": "^4.0.2",
     "@types/koa__cors": "^4.0.0",
     "@types/node": "*",
+    "copy-webpack-plugin": "^11.0.0",
     "eslint": "^8.46.0",
     "eslint-plugin-import": "^2.28.0",
+    "ts-loader": "^9.4.4",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",
