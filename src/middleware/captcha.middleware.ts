@@ -15,6 +15,7 @@ function createCaptcha(ctx: Context) {
   const xOffset = 10;
   const yOffset = 35;
   const fontSize = 35;
+  const cSpacing = 0.7;
 
   const canvas = Canvas.createCanvas(100, 50);
   const ctx2d = canvas.getContext("2d");
@@ -25,7 +26,7 @@ function createCaptcha(ctx: Context) {
   ctx.session![CONFIG.CAPTCHA_KEY] = captcha;
 
   for (let i = 0; i < captcha.length; i++) {
-    const charX = xOffset + i * (fontSize * 0.7);
+    const charX = xOffset + i * (fontSize * cSpacing);
 
     ctx2d.font = `${fontSize}px Arial`;
     ctx2d.fillStyle = randomHexColor();
