@@ -1,5 +1,6 @@
-import Canvas from "canvas";
+import { createCanvas } from "canvas";
 
+import type { CanvasRenderingContext2D } from "canvas";
 import type { Context, Next } from "koa";
 
 import CONFIG from "../config";
@@ -11,13 +12,47 @@ interface VerifyCaptchaBody {
   code: string
 }
 
-function createCaptcha(ctx: Context) {
-  const xOffset = 10;
-  const yOffset = 35;
-  const fontSize = 35;
-  const cSpacing = 0.6;
+interface Config {
+  xOffset: number
+  yOffset: number
+  fontSize: number
+  cSpacing: number
+}
 
-  const canvas = Canvas.createCanvas(100, 50);
+function drawCaptchaBackground(ctx: CanvasRenderingContext2D): void {
+  ctx.fillStyle = randomHexColor();
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * ctx.canvas.width, Math.random() * ctx.canvas.height);
+    ctx.lineTo(Math.random() * ctx.canvas.width, Math.random() * ctx.canvas.height);
+    ctx.strokeStyle = randomHexColor();
+    ctx.stroke();
+  }
+}
+
+function drawCaptchaCharacters(ctx: CanvasRenderingContext2D, config: Config, captcha: string): void {
+  const { cSpacing, xOffset, fontSize, yOffset } = config;
+
+  for (let i = 0; i < captcha.length; i++) {
+    const charX = xOffset + i * (fontSize * cSpacing);
+
+    ctx.font = `${fontSize}px Arial`;
+    ctx.fillStyle = randomHexColor();
+    ctx.fillText(captcha[i], charX, yOffset);
+  }
+}
+
+async function createCaptcha(ctx: Context, next: Next): Promise<void> {
+  const config: Config = {
+    cSpacing: 0.6,
+    fontSize: 35,
+    xOffset: 10,
+    yOffset: 35
+  };
+
+  const canvas = createCanvas(100, 50);
   const ctx2d = canvas.getContext("2d");
   ctx2d.fillStyle = randomHexColor();
   ctx2d.fillRect(0, 0, canvas.width, canvas.height);
@@ -25,16 +60,13 @@ function createCaptcha(ctx: Context) {
   const captcha = randomText();
   ctx.session![CONFIG.CAPTCHA_KEY] = captcha;
 
-  for (let i = 0; i < captcha.length; i++) {
-    const charX = xOffset + i * (fontSize * cSpacing);
-
-    ctx2d.font = `${fontSize}px Arial`;
-    ctx2d.fillStyle = randomHexColor();
-    ctx2d.fillText(captcha[i], charX, yOffset);
-  }
+  drawCaptchaBackground(ctx2d);
+  drawCaptchaCharacters(ctx2d, config, captcha);
 
   ctx.type = "image/png";
   ctx.body = canvas.toBuffer();
+
+  await next();
 }
 
 async function verifyCaptcha(ctx: Context, next: Next): Promise<void> {
