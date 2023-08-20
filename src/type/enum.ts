@@ -5,7 +5,7 @@ enum StatusCode {
 }
 
 enum ErrorEnum {
-  ERROR = "error",
+  ERROR = "Internal Server Error",
   VALIDATION = "验证码错误"
 }
 

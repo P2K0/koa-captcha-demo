@@ -1,10 +1,11 @@
 import type Koa from "koa";
 import type Router from "koa-router";
 
-import { useContextFile } from "../hook";
+import captchaRouter from "./captcha.router";
+import homeRouter from "./home.router";
 
-export async function setupRouter(app: Koa): Promise<void> {
-  const routeFiles: Router[] = await useContextFile(__dirname);
+export function setupRouter(app: Koa): void {
+  const routeFiles: Router[] = [homeRouter, captchaRouter];
 
   if (!routeFiles.length) return;
 

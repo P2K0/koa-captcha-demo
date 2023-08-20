@@ -1,2 +1,2 @@
-export * from "./useContextFile";
 export * from "./useResponse";
+export * from "./useContentRender";

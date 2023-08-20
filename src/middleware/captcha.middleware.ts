@@ -15,6 +15,7 @@ function createCaptcha(ctx: Context) {
   const xOffset = 10;
   const yOffset = 35;
   const fontSize = 35;
+  const cSpacing = 0.6;
 
   const canvas = Canvas.createCanvas(100, 50);
   const ctx2d = canvas.getContext("2d");
@@ -25,7 +26,7 @@ function createCaptcha(ctx: Context) {
   ctx.session![CONFIG.CAPTCHA_KEY] = captcha;
 
   for (let i = 0; i < captcha.length; i++) {
-    const charX = xOffset + i * (fontSize * 0.7);
+    const charX = xOffset + i * (fontSize * cSpacing);
 
     ctx2d.font = `${fontSize}px Arial`;
     ctx2d.fillStyle = randomHexColor();
@@ -37,7 +38,7 @@ function createCaptcha(ctx: Context) {
 }
 
 async function verifyCaptcha(ctx: Context, next: Next): Promise<void> {
-  const { success, error } = useResponse(ctx, next);
+  const { success, error } = useResponse(ctx);
   const { code } = ctx.request.body as VerifyCaptchaBody;
   const captcha = ctx.session![CONFIG.CAPTCHA_KEY];
 
@@ -47,6 +48,8 @@ async function verifyCaptcha(ctx: Context, next: Next): Promise<void> {
   else {
     await error({ msg: ErrorEnum.VALIDATION, code: StatusCode.VALIDATION_ERROR });
   }
+
+  await next();
 }
 
 export { createCaptcha, verifyCaptcha };
