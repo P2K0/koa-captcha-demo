@@ -15,7 +15,7 @@ function createCaptcha(ctx: Context) {
   const xOffset = 10;
   const yOffset = 35;
   const fontSize = 35;
-  const cSpacing = 0.7;
+  const cSpacing = 0.6;
 
   const canvas = Canvas.createCanvas(100, 50);
   const ctx2d = canvas.getContext("2d");
