@@ -57,8 +57,8 @@
           background-color: #0056b3;
       }
 
-      .f-red{
-          color:red
+      .f-red {
+          color: red
       }
   </style>
 </head>
@@ -71,35 +71,35 @@
 </div>
 
 <script>
-  const imageEl = document.querySelector('img');
-  const inputEl = document.querySelector('input');
-  const buttonEl = document.querySelector('button');
-  const messageEl = document.querySelector('span');
+  const imageEl = document.querySelector("img");
+  const inputEl = document.querySelector("input");
+  const buttonEl = document.querySelector("button");
+  const messageEl = document.querySelector("span");
 
   function resetCaptcha() {
     imageEl.src = `captcha?${+new Date()}}`;
-    inputEl.value = '';
-    messageEl.textContent = '';
+    inputEl.value = "";
+    messageEl.textContent = "";
   }
 
-  imageEl.addEventListener('click', resetCaptcha);
+  imageEl.addEventListener("click", resetCaptcha);
 
-  buttonEl.addEventListener('click', async () => {
+  buttonEl.addEventListener("click", async () => {
     const code = inputEl.value;
 
     if (!code) return;
 
-    const res = await fetch('/captcha', {
-      method: 'POST',
+    const res = await fetch("/captcha", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({code})
+      body: JSON.stringify({ code })
     });
 
     const data = await res.json();
 
-    if (data.code !== 200)  resetCaptcha()
+    if (data.code !== 200) resetCaptcha();
 
     messageEl.textContent = data.msg;
   });

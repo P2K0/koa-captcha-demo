@@ -31,7 +31,7 @@ module.exports = {
   cache: false,
   plugins: [new CopyPlugin({
     patterns: [
-      { from: resolvePath("src/public"), to: "../public" }
+      { from: resolvePath("src/views"), to: "../views" }
     ]
   })]
 };
