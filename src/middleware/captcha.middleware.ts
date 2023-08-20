@@ -37,7 +37,7 @@ function createCaptcha(ctx: Context) {
 }
 
 async function verifyCaptcha(ctx: Context, next: Next): Promise<void> {
-  const { success, error } = useResponse(ctx, next);
+  const { success, error } = useResponse(ctx);
   const { code } = ctx.request.body as VerifyCaptchaBody;
   const captcha = ctx.session![CONFIG.CAPTCHA_KEY];
 
@@ -47,6 +47,8 @@ async function verifyCaptcha(ctx: Context, next: Next): Promise<void> {
   else {
     await error({ msg: ErrorEnum.VALIDATION, code: StatusCode.VALIDATION_ERROR });
   }
+
+  await next();
 }
 
 export { createCaptcha, verifyCaptcha };
